@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+  lenses:
+    image: lensesio/box:latest
+    hostname: lenses
+    container_name: lenses
+    ports:
+      - "3030:3030"
+      - "9092:9092"
+    environment:
+      ADV_HOST: 127.0.0.1
+      EULA: "https://licenses.lenses.io/d/?id=f89260d5-4230-11ec-9ed6-42010af01003"
+      SAMPLEDATA: 0
+volumes:
+  pg_data:
