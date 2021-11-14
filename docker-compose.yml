@@ -18,6 +18,7 @@ services:
     ports:
       - "3030:3030"
       - "9092:9092"
+      - "8081:8081"
     environment:
       ADV_HOST: 127.0.0.1
       EULA: "https://licenses.lenses.io/d/?id=f89260d5-4230-11ec-9ed6-42010af01003"
