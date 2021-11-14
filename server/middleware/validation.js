@@ -33,3 +33,20 @@ module.exports.tokenValidation = async (req, res, next) => {
     console.log(err.message);
   }
 };
+
+module.exports.descriptionValidation = async (req, res, next) => {
+  try {
+    let { description } = req.body;
+    const errors = { description: "" };
+
+    if (description.match(`\\[.+]`)) {
+      errors.description = "description isn't correct";
+      res.status(400).json({ errors });
+    } else {
+      next();
+    }
+
+  } catch (err) {
+    console.log(err.message);
+  }
+};

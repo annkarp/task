@@ -1,5 +1,6 @@
-const kafka = require('./index')
+const kafka = require('./');
 const pool = require('../db_pool');
+const { decodePayload } = require('./registry');
 
 const consumer = kafka.consumer({
   groupId: 'task'
@@ -15,8 +16,9 @@ const main = async () => {
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      if (message.key.toString() === 'AccountRegistered') {
-        const { public_id, username, role } = JSON.parse(message.value.toString());
+      if (message.key.toString() === 'AccountCreated') {
+        const payload = await decodePayload(message.value);
+        const { data: { public_id, username, role }} = payload;
 
         await pool.query(
           `INSERT INTO users(public_id, username, role) VALUES($1, $2, $3) RETURNING public_id;`,
